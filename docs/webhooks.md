@@ -12,11 +12,11 @@ You must set your webhook URL using `@nova`:
 To prevent spoofing, Kongkow sends a secret token in the headers if you configured one.
 
 **Header:**
-`x-kongkow-bot-secret`
+`x-kongkow-bot-api-secret-token`
 
 **Verification Code (Node.js):**
 ```javascript
-const secret = req.headers["x-kongkow-bot-secret"];
+const secret = req.headers["x-kongkow-bot-api-secret-token"];
 if (secret !== process.env.WEBHOOK_SECRET) {
   // Reject request
   return res.status(403).send("Unauthorized");

@@ -27,59 +27,58 @@ All bots on Kongkow are created via **@nova**, the Father of Bots.
 
 ## 2. Set Up Your Project
 
-You can start with our template or from scratch. We'll use the template for speed.
-
 ```bash
-# Clone the examples repo
-git clone https://github.com/kongkowapps/kongkow-open.git
-cd kongkow-open/kongkow-examples/echo-bot
-
-# Install dependencies
-npm install
-
-# Set up environment
-cp .env.example .env
+mkdir my-bot && cd my-bot
+npm init -y
+npm install @kongkow/sdk express
 ```
 
-Edit the `.env` file with your credentials:
+Create a `.env` file:
 
 ```ini
-PORT=3000
 BOT_TOKEN=your_token_from_nova
 WEBHOOK_SECRET=your_secret_verify_token
-KONGKOW_API_URL=https://kongkow.xyz/api/v1/bots
+PORT=3000
 ```
 
 ---
 
-## 3. Understand the Code
+## 3. Write Your Bot
 
-A minimal bot server looks like this (using Express):
+Create `index.js`:
 
-```typescript
+```javascript
 import express from "express";
+import { KongkowBot } from "@kongkow/sdk";
 
+const bot = new KongkowBot(process.env.BOT_TOKEN, {
+    webhookSecret: process.env.WEBHOOK_SECRET,
+});
+
+// Handle /start command
+bot.onCommand("start", async (update) => {
+    await bot.sendMessage(update.message.chat.id, "Hello! 👋");
+});
+
+// Echo all other messages
+bot.onMessage(async (update) => {
+    const text = update.message?.text;
+    if (text) {
+        await bot.sendMessage(update.message.chat.id, `You said: ${text}`);
+    }
+});
+
+// Webhook server
 const app = express();
 app.use(express.json());
 
-// Handle Webhooks from Kongkow
 app.post("/webhook", async (req, res) => {
-  // 1. Validate Secret
-  if (req.headers["x-kongkow-bot-secret"] !== process.env.WEBHOOK_SECRET) {
-    return res.status(403).json({ error: "Unauthorized" });
-  }
-
-  // 2. Process Update
-  const { message } = req.body;
-  if (message && message.text) {
-    console.log(`Received: ${message.text}`);
-    // Respond logic here...
-  }
-
-  res.json({ ok: true });
+    const secret = req.headers["x-kongkow-bot-api-secret-token"];
+    await bot.handleUpdate(req.body, secret);
+    res.json({ ok: true });
 });
 
-app.listen(3000, () => console.log("Bot running on port 3000"));
+app.listen(process.env.PORT || 3000, () => console.log("Bot running!"));
 ```
 
 ---
@@ -88,7 +87,7 @@ app.listen(3000, () => console.log("Bot running on port 3000"));
 
 1.  **Start the bot:**
     ```bash
-    npm run dev
+    node index.js
     ```
 
 2.  **Expose to the internet:**
@@ -108,12 +107,9 @@ app.listen(3000, () => console.log("Bot running on port 3000"));
 ## 5. Test It!
 
 Send a message to your bot in Kongkow.
-You should see the log in your terminal!
-
-```
-[info] Received: Hello Bot!
-```
+You should see `Bot running!` in your terminal — and your bot will echo back!
 
 ## Next Steps
-*   Read the [API Reference](./api-reference.md) to learn how to reply.
+*   Read the [API Reference](./api-reference.md) for all available methods.
 *   Check out [Webhooks](./webhooks.md) for full payload details.
+*   Browse [Examples](https://github.com/kongkowapps/kongkow-examples) for more patterns.
