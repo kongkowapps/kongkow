@@ -26,7 +26,7 @@ Your webhook endpoint should respond with `200 OK` immediately (under 3 seconds)
 ## 3. Financial Safety
 Since your bot is "Born with a Wallet":
 *   Never expose your Private Key (managed by Kongkow, you typically don't see it, but handle your API tokens with same care).
-*   Use the generic SDK methods for withdrawals (`withdrawToOwner`) rather than trying to construct raw transactions unless necessary.
+*   Use the SDK's `withdraw()` method for withdrawals rather than trying to construct raw transactions unless necessary.
 
 ## 4. User Privacy
 *   Do not store user messages longer than necessary.

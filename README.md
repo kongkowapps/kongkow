@@ -122,8 +122,6 @@ Nine platforms compared. All of them pick a lane: social *or* messaging *or* pay
 - Group chats with channels (text and announcement), categories, and roles
 - Send money inside any conversation
 - Soft delete, mute, and read receipts
-- **Mini Apps** — interactive widgets inside chat
-
 - **Mini Apps** — interactive widgets inside chat (e.g. specialized wallets, games)
 
 ### Bot Platform
@@ -202,8 +200,8 @@ Build bots, Mini Apps, and integrations that act as first-class citizens.
 Everything you need to ship faster.
 
 - **[Kongkow Core](https://github.com/kongkowapps/kongkow)** — The main platform (this repo).
-- **[Kongkow SDK](https://github.com/kongkowapps/kongkow-sdk)** — TypeScript/JavaScript SDK for building Mini Apps.
-- **[Kongkow Lib](https://github.com/kongkowapps/kongkow-lib)** — Core shared libraries.
+- **[Kongkow SDK](https://github.com/kongkowapps/kongkow-sdk)** — TypeScript/JavaScript SDK for building Bots and Mini Apps.
+- **[Kongkow Lib](https://github.com/kongkowapps/kongkow-lib)** — Cross-platform client library (coming soon).
 - **[Kongkow Examples](https://github.com/kongkowapps/kongkow-examples)** — Reference implementations for Bots and Mini Apps.
 
 ---
